@@ -12,7 +12,25 @@ int random_num(int min, int max) {
     return randomNumber;
 }
 
+std::string get_upper(std::string str) {
+    std::string new_string;
+    for (char chr : str) {
+        if (chr == ',' || chr == ' ') {
+            continue;
+        }
 
+        if ((int)chr >= 96) {
+            new_string += (char)((int)(chr - 32));
+        } else {
+            new_string += chr;
+        }
+    }
+
+
+    return new_string;
+}
+
+// Most of these are just for testing
 template<typename T>
 void print_array(T array[], int size) {
     for (int i = 0; i < size; i++){

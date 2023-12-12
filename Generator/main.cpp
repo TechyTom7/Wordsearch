@@ -13,13 +13,14 @@ char possible_chars[26];
 
 // Set the size of the board
 
-const int width = 10;
-const int height = 10;
+const int width = 5;
+const int height = 5;
 int blocks = width * height;
 
 char displayed_chars[width][height]; // This is the array that will store the characters in the wordsearch
 
-std::vector<std::string>words = {"ALPHABET", "QUEST", "KNIGHT", "CASTLE", "SWORD"}; // Words
+//std::vector<std::string>words = {"CAT", "DOG", "MIC"}; // Words
+std::vector<std::string>words;
 
 
 // Set the available directions
@@ -42,7 +43,19 @@ int directions = 8;
 
 int main() {
 
+    std::string word;
+    while (true) {
+        std::cout << "Input a word(Type // to finish): ";
+        std::cin >> word;
+        if (word == "//") {
+            break;
+        } else {
+            words.push_back(get_upper(word));
+        }
+    }
+
     // Implementing the alphabet into possible_chars array
+
     for (int i = 0; i < 26; i++) {
         possible_chars[i] = (char)i + 65;
     }
@@ -72,6 +85,9 @@ int main() {
 
         int word_length = words[word_index].length(); // Length of the word
         int direction = directions_left[random_num(0, directions_left.size() - 1)]; // Selected direction
+        if (word_index == 1) {
+            direction = left_down;
+        }
 
         // Other variables that are used to help with the process
         bool insert;
@@ -92,7 +108,12 @@ int main() {
                         }
 
                         if (!bool_available_spaces[row][check_block_x]) {
-                            insert = false;
+                            if (displayed_chars[row][check_block_x] == words[word_index][check_block_x - col]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
                     }
 
@@ -119,7 +140,12 @@ int main() {
                         }
 
                         if (!bool_available_spaces[check_block_y][col]) {
-                            insert = false;
+                            if (displayed_chars[check_block_y][col] == words[word_index][check_block_y - row]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
                     }
 
@@ -136,16 +162,18 @@ int main() {
                     int check_block_x = col;
                     for (int check_block_y = row; check_block_y < row + word_length; check_block_y++) {
 
-                        if (check_block_y >= height) {
-                            insert = false;
-                            break;
-                        } else if (check_block_x >= width) {
+                        if (check_block_y >= height || check_block_x >= width) {
                             insert = false;
                             break;
                         }
 
                         if (!bool_available_spaces[check_block_y][check_block_x]) {
-                            insert = false;
+                            if (displayed_chars[check_block_y][check_block_x] == words[word_index][check_block_y - row]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
 
                         check_block_x++;
@@ -162,16 +190,18 @@ int main() {
                     insert = true;
                     int check_block_x = col;
                     for (int check_block_y = row; check_block_y > row - word_length; check_block_y--) {
-                        if (check_block_y < 0) {
-                            insert = false;
-                            break;
-                        } else if (check_block_x >= width) {
+                        if (check_block_y < 0 || check_block_x >= width) {
                             insert = false;
                             break;
                         }
 
                         if (!bool_available_spaces[check_block_y][check_block_x]) {
-                            insert = false;
+                            if (displayed_chars[check_block_y][check_block_x] == words[word_index][row - check_block_y]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
 
                         check_block_x++;
@@ -193,8 +223,14 @@ int main() {
                             break;
                         }
 
+
                         if (!bool_available_spaces[row][check_block_x]) {
-                            insert = false;
+                            if (displayed_chars[row][check_block_x] == words[word_index][col - check_block_x]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
                     }
 
@@ -214,7 +250,12 @@ int main() {
                         }
 
                         if (!bool_available_spaces[check_block_y][col]) {
-                            insert = false;
+                            if (displayed_chars[check_block_y][col] == words[word_index][row - check_block_y]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
 
                     }
@@ -230,17 +271,19 @@ int main() {
                     insert = true;
                     int check_block_x = col;
                     for (int check_block_y = row; check_block_y > row - word_length; check_block_y--) {
-                        if (check_block_y < 0) {
-                            insert = false;
-                            break;
 
-                        } else if (check_block_x < 0) {
+                        if (check_block_y < 0 || check_block_x < 0) {
                             insert = false;
                             break;
                         }
 
                         if (!bool_available_spaces[check_block_y][check_block_x]) {
-                            insert = false;
+                            if (displayed_chars[check_block_y][check_block_x] == words[word_index][row - check_block_y]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
 
                         check_block_x--;
@@ -258,17 +301,18 @@ int main() {
                     int check_block_x = col;
                     for (int check_block_y = row; check_block_y < row + word_length; check_block_y++) {
 
-                        if (check_block_y >= width) {
-                            insert = false;
-                            break;
-
-                        } else if (check_block_x < 0) {
+                        if (check_block_y >= width || check_block_x < 0) {
                             insert = false;
                             break;
                         }
 
                         if (!bool_available_spaces[check_block_y][check_block_x]) {
-                            insert = false;
+                            if (displayed_chars[check_block_y][check_block_x] == words[word_index][check_block_y - row]) {
+                                insert = true;
+                            } else {
+                                insert = false;
+                                break;
+                            }
                         }
 
                         check_block_x--;

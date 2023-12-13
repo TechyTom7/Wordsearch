@@ -11,18 +11,6 @@
 
 char possible_chars[26];
 
-// Set the size of the board
-
-const int width = 5;
-const int height = 5;
-int blocks = width * height;
-
-char displayed_chars[width][height]; // This is the array that will store the characters in the wordsearch
-
-//std::vector<std::string>words = {"CAT", "DOG", "MIC"}; // Words
-std::vector<std::string>words;
-
-
 // Set the available directions
 
 enum Directions{
@@ -43,16 +31,23 @@ int directions = 8;
 
 int main() {
 
-    std::string word;
-    while (true) {
-        std::cout << "Input a word(Type // to finish): ";
-        std::cin >> word;
-        if (word == "//") {
-            break;
-        } else {
-            words.push_back(get_upper(word));
-        }
+    // The settings below can be configured to your liking!
+    const int width = 20; // The width of the wordsearch
+    const int height = 20; // The height of the wordsearch
+    std::vector<std::string>words = {"English", "Spanish", "Businessstudies", "Maths", "Physics", "Chemistry", "Biology",
+    "Economics", "Art", "Music", "PhysicalEducation", "Tourism", "Citizenship", "MarineScience", "ComputerScience", "Science"};
+    // A vector of words to be placed in the wordsearch
+    /* Be aware that to run after changing these settings, follow these steps:
+    Make sure that you are in the Generator directory by typing: cd Generator!
+    1. Type this in the terminal to compile: g++ -std=c++11 main.cpp -o generator
+    2. Then execute: ./generator
+    */
+
+    for (std::string &word : words) {
+        word = get_upper(word);
     }
+
+    char displayed_chars[width][height];
 
     // Implementing the alphabet into possible_chars array
 
@@ -85,9 +80,6 @@ int main() {
 
         int word_length = words[word_index].length(); // Length of the word
         int direction = directions_left[random_num(0, directions_left.size() - 1)]; // Selected direction
-        if (word_index == 1) {
-            direction = left_down;
-        }
 
         // Other variables that are used to help with the process
         bool insert;
@@ -101,11 +93,6 @@ int main() {
                 for (int col = 0; col <= width - word_length; col++) {
                     insert = true;
                     for (int check_block_x = col; check_block_x < col + word_length; check_block_x++) {
-
-                        if (check_block_x >= width) {
-                            insert = false;
-                            break;
-                        }
 
                         if (!bool_available_spaces[row][check_block_x]) {
                             if (displayed_chars[row][check_block_x] == words[word_index][check_block_x - col]) {
@@ -362,7 +349,7 @@ int main() {
                 std::cout << "Uh oh, something went wrong. Here are some solutions: " << std::endl;
                 std::cout << "1. Rerun the program" << std::endl;
                 std::cout << "2. Increase the size in blocks" << std::endl;
-                return 1;
+                return 0;
             }
         }
 

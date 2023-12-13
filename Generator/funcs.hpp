@@ -30,6 +30,8 @@ std::string get_upper(std::string str) {
     return new_string;
 }
 
+
+
 // Most of these are just for testing
 template<typename T>
 void print_array(T array[], int size) {
